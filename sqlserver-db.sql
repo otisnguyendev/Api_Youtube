@@ -3,7 +3,7 @@ CREATE DATABASE api_youtube;
 use api_youtube;
 
 CREATE TABLE [users] (
-  [id] INT PRIMARY KEY,
+  [id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
   [email] NVARCHAR(255),
   [password] NVARCHAR(255),
   [username] NVARCHAR(255),
@@ -13,17 +13,15 @@ CREATE TABLE [users] (
 GO
 
 CREATE TABLE [videos] (
-  [id] INT PRIMARY KEY,
+  [id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
   [user_id] INT,
   [title] NVARCHAR(255),
   [description] TEXT,
   [hashtags] NVARCHAR(255),
   [privacy_level] NVARCHAR(255) DEFAULT 'public',
   [video_url] NVARCHAR(255),
-  [related_video_ids] NVARCHAR(255),  
+  [related_video_ids] NVARCHAR(255),
   [duration_in_seconds] INT,
-  [likes_count] INT DEFAULT 0,
-  [comments_count] INT DEFAULT 0,
   [views_count] INT DEFAULT 0,
   [video_type] NVARCHAR(10),
   [category_id] INT,
@@ -32,13 +30,13 @@ CREATE TABLE [videos] (
 GO
 
 CREATE TABLE [categories] (
-  [id] INT PRIMARY KEY,
+  [id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
   [name] NVARCHAR(255)
 )
 GO
 
 CREATE TABLE [history_videos] (
-  [id] INT PRIMARY KEY,
+  [id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
   [user_id] INT,
   [video_id] INT,
   [view_time] DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -46,7 +44,7 @@ CREATE TABLE [history_videos] (
 GO
 
 CREATE TABLE [comments] (
-  [id] INT PRIMARY KEY,
+  [id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
   [user_id] INT,
   [video_id] INT,
   [content] TEXT
@@ -54,28 +52,27 @@ CREATE TABLE [comments] (
 GO
 
 CREATE TABLE [likes] (
-  [id] INT PRIMARY KEY,
+  [id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
   [user_id] INT,
   [video_id] INT
 )
 GO
 
 CREATE TABLE [followers] (
-  [id] INT PRIMARY KEY,
+  [id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
   [follower_user_id] INT,
   [following_user_id] INT
 )
 GO
 
 CREATE TABLE [bookmarks] (
-  [id] INT PRIMARY KEY,
+  [id] INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
   [user_id] INT,
   [video_id] INT
 )
 GO
 
 -- Foreign Key Constraints
-
 ALTER TABLE [videos] ADD FOREIGN KEY ([user_id]) REFERENCES [users] ([id])
 GO
 

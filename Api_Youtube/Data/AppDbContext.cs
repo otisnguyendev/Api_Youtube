@@ -24,6 +24,8 @@ namespace Api_Youtube.Data
             {
                 entity.Property(u => u.Email).IsRequired();
                 entity.HasIndex(u => u.Email).IsUnique();
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd(); 
             });
 
             modelBuilder.Entity<Video>(entity =>

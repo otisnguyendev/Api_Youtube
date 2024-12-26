@@ -29,8 +29,7 @@ public class UserRepositoryImpl : UserRepository
         await _context.SaveChangesAsync();
         return true;
     }
-
-
+    
     public async Task<bool> UpdateAsync(User user)
     {
         _context.Users.Update(user);

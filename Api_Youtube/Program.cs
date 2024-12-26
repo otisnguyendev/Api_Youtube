@@ -10,12 +10,22 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "API Youtube",
+        Title = "API TikTok",
         Version = "v1"
     });
 
@@ -38,7 +48,7 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            new string[] { }
         }
     });
 });
@@ -64,6 +74,10 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddScoped<UserService, UserServiceImpl>();
 builder.Services.AddScoped<UserRepository, UserRepositoryImpl>();
+builder.Services.AddScoped<VideoService, VideoServiceImpl>();
+builder.Services.AddScoped<VideoRepository, VideoRepositoryImpl>();
+builder.Services.AddScoped<CategoryService, CategoryServiceImpl>();
+builder.Services.AddScoped<CategoryRepository, CategoryRepositoryImpl>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
@@ -73,9 +87,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Youtube v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Youtube"));
 }
 
+app.UseCors("AllowAll");
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
