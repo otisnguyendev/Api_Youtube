@@ -1,25 +1,25 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Api_Youtube.Model;
-
-[Table("comments")]
-public class Comment
+namespace Api_Youtube.Model
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public class Comment
+    {
+        [Key]
+        public int Id { get; set; }
 
-    [ForeignKey("User")]
-    [Column("user_id")]
-    public int UserId { get; set; }
-    public User User { get; set; }
+        [ForeignKey("User")]
+        [Column("user_id")]
+        public int UserId { get; set; }
 
-    [ForeignKey("Video")]
-    [Column("video_id")]
-    public int VideoId { get; set; }
-    public Video Video { get; set; }
+        [ForeignKey("Video")]
+        [Column("video_id")]    
+        public int VideoId { get; set; }
 
-    [Required]
-    public string Content { get; set; }
+        [Column(TypeName = "text")]
+        public string Content { get; set; }
+
+        public User User { get; set; }
+        public Video Video { get; set; }
+    }
 }

@@ -1,15 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Api_Youtube.Model;
-
-[Table("categories")]
-public class Category
+namespace Api_Youtube.Model
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public string? Id { get; set; }
-    
-    [Column("name")]
-    public string? Name { get; set; }
+    public class Category
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string Name { get; set; }
+        public ICollection<Video> Videos { get; set; }
+    }
 }
