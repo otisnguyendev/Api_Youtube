@@ -1,4 +1,5 @@
-﻿using Api_Youtube.Model;
+﻿using Api_Youtube.Dto;
+using Api_Youtube.Model;
 
 namespace Api_Youtube.Repository;
 
@@ -11,4 +12,7 @@ public interface VideoRepository
     Task<bool> DeleteAsync(Video video);
     Task<bool> SaveChangesAsync();
     Task<List<Video>> SearchVideosAsync(string keyword);
+    Task<List<VideoDto>> GetVideosWithViewCountsAsync();
+    Task<List<VideoDto>> GetTopVideosWithEngagementAsync(int topCount);
+    Task<List<VideoDto>> GetWatchedVideosByUserAsync(int userId);
 }

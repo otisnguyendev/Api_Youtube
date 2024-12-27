@@ -1,4 +1,5 @@
 ﻿using Api_Youtube.Data;
+using Api_Youtube.Dto;
 using Api_Youtube.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,4 +61,64 @@ public class VideoRepositoryImpl : VideoRepository
             .Where(v => v.PrivacyLevel == "public")
             .ToListAsync();
     }
+    
+    public async Task<List<VideoDto>> GetVideosWithViewCountsAsync()
+    {
+        return await _context.Videos
+            .Select(v => new VideoDto
+            {
+                Id = v.Id,
+                Title = v.Title,
+                Description = v.Description,
+                Hashtags = v.Hashtags,
+                PrivacyLevel = v.PrivacyLevel,
+                VideoUrl = v.VideoUrl,
+                UserId = v.UserId,
+                UserName = v.User.Username,
+                ViewsCount = _context.HistoryVideos.Count(h => h.VideoId == v.Id)
+            })
+            .ToListAsync();
+    }
+    
+    public async Task<List<VideoDto>> GetTopVideosWithEngagementAsync(int topCount)
+    {
+        return await _context.Videos
+            .Select(v => new VideoDto
+            {
+                Id = v.Id,
+                Title = v.Title,
+                Description = v.Description,
+                Hashtags = v.Hashtags,
+                PrivacyLevel = v.PrivacyLevel,
+                VideoUrl = v.VideoUrl,
+                UserId = v.UserId,
+                UserName = v.User.Username,
+                ViewsCount = v.ViewsCount,
+                LikesCount = _context.Likes.Count(l => l.VideoId == v.Id),
+                TotalViewVideo = v.ViewsCount + _context.Likes.Count(l => l.VideoId == v.Id)
+            })
+            .OrderByDescending(v => v.TotalViewVideo)
+            .Take(topCount)
+            .ToListAsync();
+    }
+
+    public async Task<List<VideoDto>> GetWatchedVideosByUserAsync(int userId)
+    {
+        return await _context.HistoryVideos
+            .Where(h => h.UserId == userId)
+            .OrderByDescending(h => h.ViewTime)
+            .Select(h => new VideoDto
+            {
+                Id = h.Video.Id,
+                Title = h.Video.Title,
+                Description = h.Video.Description,
+                Hashtags = h.Video.Hashtags,
+                PrivacyLevel = h.Video.PrivacyLevel,
+                VideoUrl = h.Video.VideoUrl,
+                UserId = h.Video.UserId,
+                UserName = h.Video.User.Username
+            })
+            .ToListAsync();
+    }
+
 }

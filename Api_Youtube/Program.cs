@@ -89,6 +89,7 @@ builder.Services.AddScoped<UserService, UserServiceImpl>();
 builder.Services.AddScoped<UserRepository, UserRepositoryImpl>();
 builder.Services.AddScoped<VideoService, VideoServiceImpl>();
 builder.Services.AddScoped<VideoRepository, VideoRepositoryImpl>();
+builder.Services.AddScoped<HistoryVideoRepository, HistoryVideoRepositoryImpl>();
 builder.Services.AddScoped<CategoryService, CategoryServiceImpl>();
 builder.Services.AddScoped<CategoryRepository, CategoryRepositoryImpl>();
 builder.Services.AddScoped<FollowerService, FollowerServiceImpl>();

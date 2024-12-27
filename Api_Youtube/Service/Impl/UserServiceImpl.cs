@@ -27,7 +27,7 @@ public class UserServiceImpl : UserService
         {
             Id = u.Id,
             Username = u.Username,
-            Email = u.Email
+//            Email = u.Email
         }).ToList();
     }
 
@@ -42,7 +42,8 @@ public class UserServiceImpl : UserService
             {
                 Id = user.Id,
                 Username = user.Username,
-                Email = user.Email
+                Avatar = user.Avatar,
+                Bio = user.Bio,
             };
     }
 
@@ -82,7 +83,6 @@ public class UserServiceImpl : UserService
             Token = tokenString
         };
     }
-
     public async Task<List<UserDto>> SearchUsersAsync(string keyword)
     {
         var users = await _userRepository.SearchUsersAsync(keyword);

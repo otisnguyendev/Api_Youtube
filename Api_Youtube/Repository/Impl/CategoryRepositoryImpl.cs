@@ -20,7 +20,13 @@ public class CategoryRepositoryImpl : CategoryRepository
 
     public async Task<IEnumerable<Category>> GetAllAsync()
     {
-        return await _context.Categories.ToListAsync();
+        return await _context.Categories
+            .Select(category => new Category
+            {
+                Id = category.Id,
+                Name = category.Name
+            })
+            .ToListAsync();
     }
 
     public async Task CreateAsync(Category category)

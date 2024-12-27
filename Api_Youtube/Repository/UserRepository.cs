@@ -1,10 +1,10 @@
-﻿using Api_Youtube.Model;
+﻿using Api_Youtube.Dto;
+using Api_Youtube.Model;
 
 namespace Api_Youtube.Repository;
 
 public interface UserRepository
 {
-    
     Task<List<User>> GetAllAsync();
     Task<User?> GetByIdAsync(int id);
     Task<User?> GetByEmailAsync(string email);

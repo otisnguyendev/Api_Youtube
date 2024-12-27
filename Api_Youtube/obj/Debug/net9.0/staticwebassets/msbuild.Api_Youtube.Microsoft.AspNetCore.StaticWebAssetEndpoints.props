@@ -1,16 +1,28 @@
 ﻿<Project>
   <ItemGroup>
+    <StaticWebAssetEndpoint Include="_content/Api_Youtube/avatars/1_9b9ee478-8c5d-4d10-896a-3942951e4eea.0idzk096pr.jfif">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\avatars\1_9b9ee478-8c5d-4d10-896a-3942951e4eea.jfif'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"0idzk096pr"},{"Name":"integrity","Value":"sha256-6CxEIqSdSGDE39tuEFPJVKRz9CVHWXE8bvzWqU763jE="},{"Name":"label","Value":"_content/Api_Youtube/avatars/1_9b9ee478-8c5d-4d10-896a-3942951e4eea.jfif"}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"77367"},{"Name":"Content-Type","Value":"image/pjpeg"},{"Name":"ETag","Value":"\u00226CxEIqSdSGDE39tuEFPJVKRz9CVHWXE8bvzWqU763jE=\u0022"},{"Name":"Last-Modified","Value":"Fri, 27 Dec 2024 06:39:22 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
+    <StaticWebAssetEndpoint Include="_content/Api_Youtube/avatars/1_9b9ee478-8c5d-4d10-896a-3942951e4eea.jfif">
+      <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\avatars\1_9b9ee478-8c5d-4d10-896a-3942951e4eea.jfif'))</AssetFile>
+      <Selectors><![CDATA[[]]]></Selectors>
+      <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-6CxEIqSdSGDE39tuEFPJVKRz9CVHWXE8bvzWqU763jE="}]]]></EndpointProperties>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"77367"},{"Name":"Content-Type","Value":"image/pjpeg"},{"Name":"ETag","Value":"\u00226CxEIqSdSGDE39tuEFPJVKRz9CVHWXE8bvzWqU763jE=\u0022"},{"Name":"Last-Modified","Value":"Fri, 27 Dec 2024 06:39:22 GMT"}]]]></ResponseHeaders>
+    </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/Api_Youtube/videos/video1p.mp4">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\video1p.mp4'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-dK737HS4ZbsfVAFuuMXyYUwDSGq7UBvfZmANuXR8tvw="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"18693475"},{"Name":"Content-Type","Value":"video/mp4"},{"Name":"ETag","Value":"\u0022dK737HS4ZbsfVAFuuMXyYUwDSGq7UBvfZmANuXR8tvw=\u0022"},{"Name":"Last-Modified","Value":"Fri, 27 Dec 2024 01:01:19 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=3600, must-revalidate"},{"Name":"Content-Length","Value":"18693475"},{"Name":"Content-Type","Value":"video/mp4"},{"Name":"ETag","Value":"\u0022dK737HS4ZbsfVAFuuMXyYUwDSGq7UBvfZmANuXR8tvw=\u0022"},{"Name":"Last-Modified","Value":"Fri, 27 Dec 2024 06:41:22 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/Api_Youtube/videos/video1p.ozzpcsndse.mp4">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\video1p.mp4'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"ozzpcsndse"},{"Name":"integrity","Value":"sha256-dK737HS4ZbsfVAFuuMXyYUwDSGq7UBvfZmANuXR8tvw="},{"Name":"label","Value":"_content/Api_Youtube/videos/video1p.mp4"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"18693475"},{"Name":"Content-Type","Value":"video/mp4"},{"Name":"ETag","Value":"\u0022dK737HS4ZbsfVAFuuMXyYUwDSGq7UBvfZmANuXR8tvw=\u0022"},{"Name":"Last-Modified","Value":"Fri, 27 Dec 2024 01:01:19 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"18693475"},{"Name":"Content-Type","Value":"video/mp4"},{"Name":"ETag","Value":"\u0022dK737HS4ZbsfVAFuuMXyYUwDSGq7UBvfZmANuXR8tvw=\u0022"},{"Name":"Last-Modified","Value":"Fri, 27 Dec 2024 06:41:22 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/Api_Youtube/videos/videohon1p.mp4">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\videos\videohon1p.mp4'))</AssetFile>

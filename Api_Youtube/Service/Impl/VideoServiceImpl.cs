@@ -12,12 +12,15 @@ public class VideoServiceImpl : VideoService
     private readonly UserRepository _userRepository;
     private readonly IConfiguration _configuration;
     private readonly CategoryRepository _categoryRepository;
-
+    private readonly HistoryVideoRepository _historyVideoRepository;
+    
     public VideoServiceImpl(VideoRepository videoRepository, IConfiguration configuration,
-        UserRepository userRepository, CategoryRepository categoryRepository)
+        UserRepository userRepository, CategoryRepository categoryRepository,
+        HistoryVideoRepository historyVideoRepository)
     {
         _userRepository = userRepository;
         _categoryRepository = categoryRepository;
+        _historyVideoRepository = historyVideoRepository;
         _videoRepository = videoRepository ?? throw new ArgumentNullException(nameof(videoRepository));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
@@ -169,6 +172,48 @@ public class VideoServiceImpl : VideoService
     public async Task<List<VideoDto>> SearchVideosAsync(string keyword)
     {
         var videos = await _videoRepository.SearchVideosAsync(keyword);
+        return videos.Select(v => new VideoDto
+        {
+            Id = v.Id,
+            Title = v.Title,
+            Description = v.Description,
+            Hashtags = v.Hashtags,
+            PrivacyLevel = v.PrivacyLevel,
+            VideoUrl = v.VideoUrl,
+            UserId = v.UserId,
+            UserName = v.User.Username
+        }).ToList();
+    }
+
+    public async Task<List<VideoDto>> GetVideosWithViewCountsAsync()
+    {
+        return await _videoRepository.GetVideosWithViewCountsAsync();
+    }
+
+    public async Task<List<VideoDto>> GetTopVideosByEngagementAsync(int topCount)
+    {
+        return await _videoRepository.GetTopVideosWithEngagementAsync(topCount);
+    }
+
+    public async Task AddHistoryAsync(int userId, int videoId)
+    {
+        var video = await _videoRepository.GetVideoByIdAsync(videoId);
+        if (video == null)
+            throw new Exception("Video not found");
+
+        var history = new HistoryVideo
+        {
+            UserId = userId,
+            VideoId = videoId,
+            ViewTime = DateTime.UtcNow
+        };
+
+        await _historyVideoRepository.AddHistoryAsync(history);
+    }
+
+    public async Task<List<VideoDto>> GetWatchedVideosByUserIdAsync(int userId)
+    {
+        var videos = await _historyVideoRepository.GetWatchedVideosByUserIdAsync(userId);
         return videos.Select(v => new VideoDto
         {
             Id = v.Id,

@@ -10,4 +10,8 @@ public interface VideoService
     Task<bool> UpdateVideoAsync(int videoId, int userId, UpdateVideoDto request);
     Task<bool> DeleteVideoAsync(int videoId, int userId);
     Task<List<VideoDto>> SearchVideosAsync(string keyword);
+    Task<List<VideoDto>> GetVideosWithViewCountsAsync();
+    Task<List<VideoDto>> GetTopVideosByEngagementAsync(int topCount);
+    Task AddHistoryAsync(int userId, int videoId);
+    Task<List<VideoDto>> GetWatchedVideosByUserIdAsync(int userId);
 }

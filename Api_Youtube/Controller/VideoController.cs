@@ -78,4 +78,40 @@ public class VideoController : BaseController
         else
             return BadRequest(new { message = "Failed to delete video." });
     }
+
+    [HttpGet("view-counts")]
+    public async Task<IActionResult> GetVideosWithViewCounts()
+    {
+        var videos = await _videoService.GetVideosWithViewCountsAsync();
+        return Ok(videos);
+    }
+
+    [HttpGet("top-video")]
+    public async Task<IActionResult> GetTopVideosByEngagement([FromQuery] int topCount = 10)
+    {
+        if (topCount <= 0)
+            return BadRequest(new { Message = "Invalid top count value" });
+
+        var videos = await _videoService.GetTopVideosByEngagementAsync(topCount);
+        return Ok(videos);
+    }
+    
+    [Authorize]
+    [HttpPost("{videoId:int}/watch")]
+    public async Task<IActionResult> WatchVideo(int videoId)
+    {
+        var userId = GetUserIdFromClaims();
+        await _videoService.AddHistoryAsync(userId, videoId);
+        return Ok(new { Message = "Watch history recorded successfully" });
+    }
+
+    [Authorize]
+    [HttpGet("watched")]
+    public async Task<IActionResult> GetWatchedVideos()
+    {
+        var userId = GetUserIdFromClaims();
+        var videos = await _videoService.GetWatchedVideosByUserIdAsync(userId);
+        return Ok(videos);
+    }
+
 }
