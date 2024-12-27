@@ -4,6 +4,7 @@ using Api_Youtube.Repository;
 using Api_Youtube.Repository.Impl;
 using Api_Youtube.Service;
 using Api_Youtube.Service.Impl;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -19,6 +20,18 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
+// Set max upload 100MB
+builder.WebHost.UseKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 1073741824; 
+});
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 1073741824; 
+});
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

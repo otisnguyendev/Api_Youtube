@@ -12,7 +12,7 @@ public class VideoServiceImpl : VideoService
     private readonly UserRepository _userRepository;
     private readonly IConfiguration _configuration;
     private readonly CategoryRepository _categoryRepository;
-    
+
     public VideoServiceImpl(VideoRepository videoRepository, IConfiguration configuration,
         UserRepository userRepository, CategoryRepository categoryRepository)
     {
@@ -34,7 +34,7 @@ public class VideoServiceImpl : VideoService
             PrivacyLevel = v.PrivacyLevel,
             VideoUrl = v.VideoUrl,
             UserId = v.UserId,
-            UserName = v.User?.Username
+            UserName = v.User?.Username ?? "Unknown"
         }).ToList();
     }
 
@@ -85,7 +85,7 @@ public class VideoServiceImpl : VideoService
                 category = await _categoryRepository.GetByIdAsync(request.CategoryId.Value);
                 if (category == null)
                 {
-                    return false; 
+                    return false;
                 }
             }
 
@@ -99,7 +99,7 @@ public class VideoServiceImpl : VideoService
                 VideoUrl = videoUrl,
                 VideoType = request.VideoType.ToString(),
                 DurationInSeconds = videoDurationInSeconds,
-                CategoryId = category?.Id 
+                CategoryId = category?.Id
             };
 
             await _videoRepository.CreateAsync(video);
@@ -109,24 +109,26 @@ public class VideoServiceImpl : VideoService
         return false;
     }
 
-    
+
     private async Task<int> GetVideoDurationAsync(string videoPath)
     {
         var videoFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "videos", videoPath);
-    
+
         if (!File.Exists(videoFilePath))
         {
             throw new FileNotFoundException("Video file not found", videoFilePath);
         }
+
         var inputFile = new MediaFile { Filename = videoFilePath };
 
         using (var engine = new MediaToolkit.Engine())
         {
             engine.GetMetadata(inputFile);
         }
+
         return (int)inputFile.Metadata.Duration.TotalSeconds;
     }
-    
+
     public async Task<bool> UpdateVideoAsync(int videoId, int userId, UpdateVideoDto request)
     {
         var video = await _videoRepository.GetVideoByIdAsync(videoId);
@@ -151,11 +153,11 @@ public class VideoServiceImpl : VideoService
 
         return await _videoRepository.DeleteAsync(video);
     }
-    
+
     private async Task<string> SaveFileAsync(IFormFile file, string folder)
     {
         var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folder, file.FileName);
-        
+
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
             await file.CopyToAsync(stream);
@@ -163,7 +165,7 @@ public class VideoServiceImpl : VideoService
 
         return file.FileName;
     }
-    
+
     public async Task<List<VideoDto>> SearchVideosAsync(string keyword)
     {
         var videos = await _videoRepository.SearchVideosAsync(keyword);

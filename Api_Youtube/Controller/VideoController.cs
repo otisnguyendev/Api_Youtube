@@ -35,13 +35,6 @@ public class VideoController : BaseController
             return BadRequest(new { message = "Failed to upload video." });
     }
 
-    [HttpGet("public-feed")]
-    public async Task<IActionResult> GetPublicVideos()
-    {
-        var videos = await _videoService.GetPublicVideosAsync();
-        return Ok(videos);
-    }
-
     [Authorize]
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserVideos(int userId)
@@ -64,6 +57,13 @@ public class VideoController : BaseController
             return Ok(new { message = "Video updated successfully." });
         else
             return BadRequest(new { message = "Failed to update video." });
+    }
+
+    [HttpGet("public-feed")]
+    public async Task<IActionResult> GetPublicVideos()
+    {
+        var videos = await _videoService.GetPublicVideosAsync();
+        return Ok(videos);
     }
 
     [Authorize]

@@ -20,15 +20,7 @@ public class VideoRepositoryImpl : VideoRepository
         _context.Videos.AddAsync(video);
         return await _context.SaveChangesAsync() > 0;
     }
-
-    public async Task<List<Video>> GetPublicVideosAsync()
-    {
-        return await _context.Videos
-            .Include(v => v.User)
-            .Where(v => v.PrivacyLevel == "public")
-            .ToListAsync();
-    }
-
+    
     public async Task<List<Video>> GetUserVideosAsync(int userId)
     {
         return await _context.Videos
@@ -36,7 +28,13 @@ public class VideoRepositoryImpl : VideoRepository
             .Where(v => v.UserId == userId)
             .ToListAsync();
     }
-
+    public async Task<List<Video>> GetPublicVideosAsync()
+    {
+        return await _context.Set<Video>()
+            .Include(v => v.User)
+            .Where(v => v.PrivacyLevel == "Public")
+            .ToListAsync();
+    }
     public async Task<Video?> GetVideoByIdAsync(int videoId)
     {
         return await _context.Videos.Include(v => v.User).FirstOrDefaultAsync(v => v.Id == videoId);

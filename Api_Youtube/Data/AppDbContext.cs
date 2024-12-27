@@ -39,6 +39,9 @@ namespace Api_Youtube.Data
                 {
                     tb.HasCheckConstraint("chk_video_type", "video_type IN ('short', 'long')");
                 });
+                entity.HasOne(v => v.Category)
+                    .WithMany(c => c.Videos)
+                    .HasForeignKey(v => v.CategoryId);
             });
 
             modelBuilder.Entity<Follower>(entity =>
@@ -90,19 +93,12 @@ namespace Api_Youtube.Data
             modelBuilder.Entity<Bookmark>(entity =>
             {
                 entity.HasOne(b => b.User)
-                      .WithMany(u => u.Bookmarks)
-                      .HasForeignKey(b => b.UserId);
+                    .WithMany(u => u.Bookmarks)
+                    .HasForeignKey(b => b.UserId);
 
                 entity.HasOne(b => b.Video)
-                      .WithMany(v => v.Bookmarks)
-                      .HasForeignKey(b => b.VideoId);
-            });
-
-            modelBuilder.Entity<Video>(entity =>
-            {
-                entity.HasOne(v => v.Category)
-                      .WithMany(c => c.Videos)
-                      .HasForeignKey(v => v.CategoryId);
+                    .WithMany(v => v.Bookmarks)
+                    .HasForeignKey(b => b.VideoId);
             });
         }
     }

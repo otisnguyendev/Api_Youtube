@@ -20,11 +20,11 @@ CREATE TABLE [videos] (
   [hashtags] NVARCHAR(255),
   [privacy_level] NVARCHAR(255) DEFAULT 'public',
   [video_url] NVARCHAR(255),
-  [related_video_ids] NVARCHAR(255),
+  [related_video_ids] NVARCHAR(255) NULL,
   [duration_in_seconds] INT,
   [views_count] INT DEFAULT 0,
   [video_type] NVARCHAR(10),
-  [category_id] INT,
+  [category_id] INT NULL,
   CONSTRAINT chk_video_type CHECK (video_type IN ('short', 'long'))
 )
 GO
@@ -108,4 +108,3 @@ GO
 
 ALTER TABLE [videos] ADD FOREIGN KEY ([category_id]) REFERENCES [categories] ([id])
 GO
-
