@@ -48,10 +48,10 @@ namespace Api_Youtube.Model
 
         public Category? Category { get; set; }
 
-        public ICollection<Comment>? Comments { get; set; }
-        public ICollection<Like>? Likes { get; set; }
-        public ICollection<Bookmark>? Bookmarks { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Like> Likes { get; set; }
+        public ICollection<Bookmark> Bookmarks { get; set; }
         
-        public ICollection<HistoryVideo>? HistoryVideos { get; set; }
+        public ICollection<HistoryVideo> HistoryVideos { get; set; }
     }
 }

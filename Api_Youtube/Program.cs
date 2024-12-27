@@ -91,7 +91,14 @@ builder.Services.AddScoped<VideoService, VideoServiceImpl>();
 builder.Services.AddScoped<VideoRepository, VideoRepositoryImpl>();
 builder.Services.AddScoped<CategoryService, CategoryServiceImpl>();
 builder.Services.AddScoped<CategoryRepository, CategoryRepositoryImpl>();
-
+builder.Services.AddScoped<FollowerService, FollowerServiceImpl>();
+builder.Services.AddScoped<FollowerRepository, FollowerRepositoryImpl>();
+builder.Services.AddScoped<LikeService, LikeServiceImpl>();
+builder.Services.AddScoped<LikeRepository, LikeRepositoryImpl>();
+builder.Services.AddScoped<CommentService, CommentServiceImpl>();
+builder.Services.AddScoped<CommentRepository, CommentRepositoryImpl>();
+builder.Services.AddScoped<BookmarkService, BookmarkServiceImpl>();
+builder.Services.AddScoped<BookmarkRepository, BookmarkRepositoryImpl>();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
