@@ -72,7 +72,6 @@ CREATE TABLE [bookmarks] (
 )
 GO
 
--- Foreign Key Constraints
 ALTER TABLE [videos] ADD FOREIGN KEY ([user_id]) REFERENCES [users] ([id])
 GO
 

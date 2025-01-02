@@ -7,5 +7,7 @@ public class UserDto
     public string Email { get; set; }
     public string? Avatar { get; set; }
     public string? Bio { get; set; }
+    
+    public List<VideoDto> PublicVideos { get; set; } = new();
 
 }

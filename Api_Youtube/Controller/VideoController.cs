@@ -60,12 +60,12 @@ public class VideoController : BaseController
     }
 
     [HttpGet("public-feed")]
-    public async Task<IActionResult> GetPublicVideos()
+    public async Task<IActionResult> GetPublicVideos(int pageNumber = 1, int pageSize = 10)
     {
-        var videos = await _videoService.GetPublicVideosAsync();
-        return Ok(videos);
+        var paginatedVideos = await _videoService.GetPublicVideosAsync(pageNumber, pageSize);
+        return Ok(paginatedVideos);
     }
-
+    
     [Authorize]
     [HttpDelete("{videoId}")]
     public async Task<IActionResult> DeleteVideo(int videoId)
@@ -77,13 +77,6 @@ public class VideoController : BaseController
             return Ok(new { message = "Video deleted successfully." });
         else
             return BadRequest(new { message = "Failed to delete video." });
-    }
-
-    [HttpGet("view-counts")]
-    public async Task<IActionResult> GetVideosWithViewCounts()
-    {
-        var videos = await _videoService.GetVideosWithViewCountsAsync();
-        return Ok(videos);
     }
 
     [HttpGet("top-video")]

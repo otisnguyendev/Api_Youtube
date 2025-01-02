@@ -27,7 +27,6 @@ public class UserServiceImpl : UserService
         {
             Id = u.Id,
             Username = u.Username,
-//            Email = u.Email
         }).ToList();
     }
 

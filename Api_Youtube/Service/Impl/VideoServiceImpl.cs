@@ -1,4 +1,6 @@
-﻿using Api_Youtube.Common;
+﻿using System.Linq.Expressions;
+using Api_Youtube.Common;
+using Api_Youtube.Data;
 using Api_Youtube.Dto;
 using Api_Youtube.Model;
 using Api_Youtube.Repository;
@@ -10,37 +12,45 @@ public class VideoServiceImpl : VideoService
 {
     private readonly VideoRepository _videoRepository;
     private readonly UserRepository _userRepository;
-    private readonly IConfiguration _configuration;
     private readonly CategoryRepository _categoryRepository;
     private readonly HistoryVideoRepository _historyVideoRepository;
-    
-    public VideoServiceImpl(VideoRepository videoRepository, IConfiguration configuration,
+    private readonly AppDbContext _context;
+
+    public VideoServiceImpl(VideoRepository videoRepository, AppDbContext context,
         UserRepository userRepository, CategoryRepository categoryRepository,
         HistoryVideoRepository historyVideoRepository)
     {
+        _context = context;
         _userRepository = userRepository;
         _categoryRepository = categoryRepository;
         _historyVideoRepository = historyVideoRepository;
         _videoRepository = videoRepository ?? throw new ArgumentNullException(nameof(videoRepository));
-        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    public async Task<List<VideoDto>> GetPublicVideosAsync()
+    public async Task<List<VideoDto>> GetPublicVideosAsync(int pageNumber, int pageSize)
     {
-        var videos = await _videoRepository.GetPublicVideosAsync();
-        return videos.Select(v => new VideoDto
-        {
-            Id = v.Id,
-            Title = v.Title,
-            Description = v.Description,
-            Hashtags = v.Hashtags,
-            PrivacyLevel = v.PrivacyLevel,
-            VideoUrl = v.VideoUrl,
-            UserId = v.UserId,
-            UserName = v.User?.Username ?? "Unknown"
-        }).ToList();
+        var videos = await _videoRepository.GetPublicVideosAsync(pageNumber, pageSize);
+
+        return videos
+            .Skip((pageNumber - 1) * pageSize) 
+            .Take(pageSize)
+            .Select(v => new VideoDto
+            {
+                Id = v.Id,
+                Title = v.Title,
+                Description = v.Description,
+                Hashtags = v.Hashtags,
+                PrivacyLevel = v.PrivacyLevel,
+                VideoUrl = v.VideoUrl,
+                UserId = v.UserId,
+                ViewsCount = _context.HistoryVideos.Count(h => h.VideoId == v.Id),
+                LikesCount = _context.Likes.Count(l => l.VideoId == v.Id),
+                TotalViewVideo = _context.HistoryVideos.Count(h => h.VideoId == v.Id) + _context.Likes.Count(l => l.VideoId == v.Id)
+            })
+            .ToList();
     }
 
+    
     public async Task<List<VideoDto>> GetUserVideosAsync(int userId, bool isLoggedIn)
     {
         var videos = await _videoRepository.GetUserVideosAsync(userId);
@@ -176,18 +186,11 @@ public class VideoServiceImpl : VideoService
         {
             Id = v.Id,
             Title = v.Title,
-            Description = v.Description,
-            Hashtags = v.Hashtags,
             PrivacyLevel = v.PrivacyLevel,
             VideoUrl = v.VideoUrl,
             UserId = v.UserId,
             UserName = v.User.Username
         }).ToList();
-    }
-
-    public async Task<List<VideoDto>> GetVideosWithViewCountsAsync()
-    {
-        return await _videoRepository.GetVideosWithViewCountsAsync();
     }
 
     public async Task<List<VideoDto>> GetTopVideosByEngagementAsync(int topCount)
@@ -214,16 +217,20 @@ public class VideoServiceImpl : VideoService
     public async Task<List<VideoDto>> GetWatchedVideosByUserIdAsync(int userId)
     {
         var videos = await _historyVideoRepository.GetWatchedVideosByUserIdAsync(userId);
+
         return videos.Select(v => new VideoDto
         {
             Id = v.Id,
             Title = v.Title,
-            Description = v.Description,
-            Hashtags = v.Hashtags,
             PrivacyLevel = v.PrivacyLevel,
             VideoUrl = v.VideoUrl,
-            UserId = v.UserId,
-            UserName = v.User.Username
+            Hashtags = v.Hashtags,
+            Description = v.Description,
+            ViewsCount = v.ViewsCount, 
+            //LikesCount = v.LikesCount,
+            //TotalViewVideo = v.TotalViewVideo 
         }).ToList();
     }
+
+
 }

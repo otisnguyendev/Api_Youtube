@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "eTYqnOLqvOoqTSaYS2hB/lDvoT3VLcwUMTd2dKq9DM0=",
+  "Hash": "L/jg2mdRSl8SuzWYXKTr+lqSttqnkIcc+F6wyh5EgU0=",
   "Source": "Api_Youtube",
   "BasePath": "_content/Api_Youtube",
   "Mode": "Default",
@@ -36,6 +36,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\avatars\\1_9b9ee478-8c5d-4d10-896a-3942951e4eea.jfif"
+    },
+    {
+      "Identity": "E:\\Api_Youtube\\Api_Youtube\\wwwroot\\avatars\\1_e18e48b2-963a-4e3b-b779-37cf259f808c.jfif",
+      "SourceId": "Api_Youtube",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Api_Youtube\\Api_Youtube\\wwwroot\\",
+      "BasePath": "_content/Api_Youtube",
+      "RelativePath": "avatars/1_e18e48b2-963a-4e3b-b779-37cf259f808c#[.{fingerprint}]?.jfif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "0idzk096pr",
+      "Integrity": "6CxEIqSdSGDE39tuEFPJVKRz9CVHWXE8bvzWqU763jE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\avatars\\1_e18e48b2-963a-4e3b-b779-37cf259f808c.jfif"
     },
     {
       "Identity": "E:\\Api_Youtube\\Api_Youtube\\wwwroot\\videos\\video1p.mp4",
@@ -164,6 +185,88 @@
       ]
     },
     {
+      "Route": "avatars/1_e18e48b2-963a-4e3b-b779-37cf259f808c.0idzk096pr.jfif",
+      "AssetFile": "E:\\Api_Youtube\\Api_Youtube\\wwwroot\\avatars\\1_e18e48b2-963a-4e3b-b779-37cf259f808c.jfif",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "77367"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/pjpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6CxEIqSdSGDE39tuEFPJVKRz9CVHWXE8bvzWqU763jE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 30 Dec 2024 06:56:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "0idzk096pr"
+        },
+        {
+          "Name": "label",
+          "Value": "avatars/1_e18e48b2-963a-4e3b-b779-37cf259f808c.jfif"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-6CxEIqSdSGDE39tuEFPJVKRz9CVHWXE8bvzWqU763jE="
+        }
+      ]
+    },
+    {
+      "Route": "avatars/1_e18e48b2-963a-4e3b-b779-37cf259f808c.jfif",
+      "AssetFile": "E:\\Api_Youtube\\Api_Youtube\\wwwroot\\avatars\\1_e18e48b2-963a-4e3b-b779-37cf259f808c.jfif",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "77367"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "image/pjpeg"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"6CxEIqSdSGDE39tuEFPJVKRz9CVHWXE8bvzWqU763jE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Mon, 30 Dec 2024 06:56:38 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=3600, must-revalidate"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-6CxEIqSdSGDE39tuEFPJVKRz9CVHWXE8bvzWqU763jE="
+        }
+      ]
+    },
+    {
       "Route": "videos/video1p.mp4",
       "AssetFile": "E:\\Api_Youtube\\Api_Youtube\\wwwroot\\videos\\video1p.mp4",
       "Selectors": [],
@@ -268,7 +371,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Dec 2024 01:09:33 GMT"
+          "Value": "Mon, 30 Dec 2024 06:58:08 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -305,7 +408,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 27 Dec 2024 01:09:33 GMT"
+          "Value": "Mon, 30 Dec 2024 06:58:08 GMT"
         },
         {
           "Name": "Cache-Control",

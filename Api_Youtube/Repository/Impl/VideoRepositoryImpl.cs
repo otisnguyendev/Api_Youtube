@@ -1,4 +1,5 @@
-﻿using Api_Youtube.Data;
+﻿using System.Linq.Expressions;
+using Api_Youtube.Data;
 using Api_Youtube.Dto;
 using Api_Youtube.Model;
 using Microsoft.EntityFrameworkCore;
@@ -29,13 +30,36 @@ public class VideoRepositoryImpl : VideoRepository
             .Where(v => v.UserId == userId)
             .ToListAsync();
     }
-    public async Task<List<Video>> GetPublicVideosAsync()
+    public async Task<PaginatedList<VideoDto>> GetPublicVideosAsync(int pageNumber, int pageSize)
     {
-        return await _context.Set<Video>()
+        var videosQuery = _context.Videos
             .Include(v => v.User)
             .Where(v => v.PrivacyLevel == "Public")
+            .Select(v => new VideoDto
+            {
+                Id = v.Id,
+                Title = v.Title,
+                Description = v.Description,
+                Hashtags = v.Hashtags,
+                PrivacyLevel = v.PrivacyLevel,
+                VideoUrl = v.VideoUrl,
+                UserId = v.UserId,
+                UserName = v.User.Username,
+                ViewsCount = _context.HistoryVideos.Count(h => h.VideoId == v.Id),
+                LikesCount = _context.Likes.Count(l => l.VideoId == v.Id),
+                TotalViewVideo = _context.HistoryVideos.Count(h => h.VideoId == v.Id) + _context.Likes.Count(l => l.VideoId == v.Id)
+            });
+
+        var videosPaged = await videosQuery
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+
+        var totalCount = await videosQuery.CountAsync();
+
+        return new PaginatedList<VideoDto>(videosPaged, totalCount, pageNumber, pageSize);
     }
+    
     public async Task<Video?> GetVideoByIdAsync(int videoId)
     {
         return await _context.Videos.Include(v => v.User).FirstOrDefaultAsync(v => v.Id == videoId);
@@ -79,29 +103,39 @@ public class VideoRepositoryImpl : VideoRepository
             })
             .ToListAsync();
     }
-    
+
     public async Task<List<VideoDto>> GetTopVideosWithEngagementAsync(int topCount)
     {
-        return await _context.Videos
+        var videoData = await _context.Videos
+            .Select(v => new
+            {
+                v.Id,
+                v.Title,
+                v.VideoUrl,
+                v.UserId,
+                UserName = v.User.Username,
+                ViewsCount = _context.HistoryVideos.Count(hv => hv.VideoId == v.Id),
+                LikesCount = _context.Likes.Count(l => l.VideoId == v.Id),
+            })
+            .ToListAsync();
+
+        return videoData
             .Select(v => new VideoDto
             {
                 Id = v.Id,
                 Title = v.Title,
-                Description = v.Description,
-                Hashtags = v.Hashtags,
-                PrivacyLevel = v.PrivacyLevel,
                 VideoUrl = v.VideoUrl,
                 UserId = v.UserId,
-                UserName = v.User.Username,
+                UserName = v.UserName,
                 ViewsCount = v.ViewsCount,
-                LikesCount = _context.Likes.Count(l => l.VideoId == v.Id),
-                TotalViewVideo = v.ViewsCount + _context.Likes.Count(l => l.VideoId == v.Id)
+                LikesCount = v.LikesCount,
+                TotalViewVideo = v.ViewsCount + v.LikesCount
             })
             .OrderByDescending(v => v.TotalViewVideo)
             .Take(topCount)
-            .ToListAsync();
+            .ToList();
     }
-
+    
     public async Task<List<VideoDto>> GetWatchedVideosByUserAsync(int userId)
     {
         return await _context.HistoryVideos
@@ -111,10 +145,9 @@ public class VideoRepositoryImpl : VideoRepository
             {
                 Id = h.Video.Id,
                 Title = h.Video.Title,
+                VideoUrl = h.Video.VideoUrl,
                 Description = h.Video.Description,
                 Hashtags = h.Video.Hashtags,
-                PrivacyLevel = h.Video.PrivacyLevel,
-                VideoUrl = h.Video.VideoUrl,
                 UserId = h.Video.UserId,
                 UserName = h.Video.User.Username
             })
