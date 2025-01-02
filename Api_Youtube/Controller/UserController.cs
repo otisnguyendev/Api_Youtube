@@ -1,4 +1,6 @@
 ﻿using Api_Youtube.Dto;
+using Api_Youtube.Dto.Request;
+using Api_Youtube.Dto.Response;
 using Api_Youtube.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
@@ -52,7 +54,7 @@ public class UserController : BaseController
 
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
     {
         if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
             return BadRequest(new { Message = "Email and password are required" });
@@ -61,8 +63,15 @@ public class UserController : BaseController
         if (user == null)
             return Unauthorized(new { Message = "Invalid credentials" });
 
-        return Ok(user);
+        var response = new LoginResponseDto
+        {
+            Email = user.Email,
+            Token = user.Token
+        };
+
+        return Ok(response);
     }
+
 
     [Authorize]
     [HttpPut("{id:int}/change-password")]

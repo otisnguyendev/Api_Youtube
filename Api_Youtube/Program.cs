@@ -21,7 +21,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Set max upload 100MB
 builder.WebHost.UseKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = 1073741824; 

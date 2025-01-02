@@ -30,17 +30,17 @@ public class BookmarkController : BaseController
         return Ok(bookmarks);
     }
 
-    [HttpPost("add")]
-    public async Task<IActionResult> AddBookmark([FromBody] BookmarkDto bookmarkDto)
+    [HttpPost("add/{videoId}")]
+    public async Task<IActionResult> AddBookmark(int videoId)
     {
-        var userId = GetUserIdFromClaims(); 
+        var userId = GetUserIdFromClaims();
 
         if (userId == 0)
         {
             return Unauthorized("User not found.");
         }
 
-        var addedBookmark = await _bookmarkService.AddBookmarkAsync(userId, bookmarkDto.VideoId);
+        var addedBookmark = await _bookmarkService.AddBookmarkAsync(userId, videoId);
         return Ok(new { message = "Video added to bookmarks.", bookmark = addedBookmark });
     }
 }

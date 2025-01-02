@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using Api_Youtube.Dto;
+using Api_Youtube.Dto.Response;
 using Api_Youtube.Model;
 using Api_Youtube.Repository;
 using Microsoft.IdentityModel.Tokens;
@@ -64,7 +65,7 @@ public class UserServiceImpl : UserService
         return await _userRepository.CreateAsync(user);
     }
 
-    public async Task<LoginDto?> LoginUserAsync(string email, string password)
+    public async Task<LoginResponseDto?> LoginUserAsync(string email, string password)
     {
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             return null;
@@ -75,13 +76,13 @@ public class UserServiceImpl : UserService
 
         var tokenString = GenerateJwtToken(user);
 
-        return new LoginDto
+        return new LoginResponseDto
         {
-            Username = user.Username,
             Email = user.Email,
             Token = tokenString
         };
     }
+
     public async Task<List<UserDto>> SearchUsersAsync(string keyword)
     {
         var users = await _userRepository.SearchUsersAsync(keyword);
