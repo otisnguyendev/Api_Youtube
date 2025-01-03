@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Api_Youtube.Dto;
+namespace Api_Youtube.Dto.Request;
 
-public class RegisterDto
+public class RegisterRequestDto
 {
     [Required]
     [MaxLength(255)]

@@ -11,7 +11,7 @@ namespace Api_Youtube.Model
         [Column("user_id")]
         public int UserId { get; set; }
 
-        public virtual User User { get; set; }
+        public User User { get; set; }
 
         [Column("title")]
         public string? Title { get; set; } 

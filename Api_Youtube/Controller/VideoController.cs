@@ -1,4 +1,5 @@
 ﻿using Api_Youtube.Dto;
+using Api_Youtube.Dto.Request;
 using Api_Youtube.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ public class VideoController : BaseController
 
     [Authorize]
     [HttpPost("upload-video")]
-    public async Task<IActionResult> UploadVideo([FromForm] UploadVideoDto request)
+    public async Task<IActionResult> UploadVideo([FromForm] UploadVideoRequestDto request)
     {
         var userId = GetUserIdFromClaims();
 
@@ -35,6 +36,7 @@ public class VideoController : BaseController
             return BadRequest(new { message = "Failed to upload video." });
     }
 
+
     [Authorize]
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserVideos(int userId)
@@ -45,10 +47,10 @@ public class VideoController : BaseController
         var videos = await _videoService.GetUserVideosAsync(userId, isLoggedIn);
         return Ok(videos);
     }
-
+    
     [Authorize]
     [HttpPut("{videoId}")]
-    public async Task<IActionResult> UpdateVideo(int videoId, [FromBody] UpdateVideoDto request)
+    public async Task<IActionResult> UpdateVideo(int videoId, [FromBody] UpdateVideoRequestDto request)
     {
         var userId = GetUserIdFromClaims();
         var result = await _videoService.UpdateVideoAsync(videoId, userId, request);
@@ -58,6 +60,7 @@ public class VideoController : BaseController
         else
             return BadRequest(new { message = "Failed to update video." });
     }
+
 
     [HttpGet("public-feed")]
     public async Task<IActionResult> GetPublicVideos(int pageNumber = 1, int pageSize = 10)

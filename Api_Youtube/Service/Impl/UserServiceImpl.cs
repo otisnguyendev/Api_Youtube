@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 using Api_Youtube.Dto;
+using Api_Youtube.Dto.Request;
 using Api_Youtube.Dto.Response;
 using Api_Youtube.Model;
 using Api_Youtube.Repository;
@@ -47,7 +48,7 @@ public class UserServiceImpl : UserService
             };
     }
 
-    public async Task<bool> RegisterUserAsync(RegisterDto request)
+    public async Task<bool> RegisterUserAsync(RegisterRequestDto request)
     {
         var existingUser = await _userRepository.GetByEmailAsync(request.Email);
         if (existingUser != null)
@@ -108,7 +109,7 @@ public class UserServiceImpl : UserService
         return await _userRepository.UpdateAsync(user);
     }
 
-    public async Task<bool> UpdateProfileAsync(int userId, UpdateProfileDto request)
+    public async Task<bool> UpdateProfileAsync(int userId, UpdateProfileRequestDto request)
     {
         var user = await _userRepository.GetByIdAsync(userId);
         if (user == null)

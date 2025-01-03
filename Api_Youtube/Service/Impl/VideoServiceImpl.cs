@@ -2,6 +2,8 @@
 using Api_Youtube.Common;
 using Api_Youtube.Data;
 using Api_Youtube.Dto;
+using Api_Youtube.Dto.Request;
+using Api_Youtube.Dto.Response;
 using Api_Youtube.Model;
 using Api_Youtube.Repository;
 using MediaToolkit.Model;
@@ -27,14 +29,14 @@ public class VideoServiceImpl : VideoService
         _videoRepository = videoRepository ?? throw new ArgumentNullException(nameof(videoRepository));
     }
 
-    public async Task<List<VideoDto>> GetPublicVideosAsync(int pageNumber, int pageSize)
+    public async Task<List<PublicVideoResponseDto>> GetPublicVideosAsync(int pageNumber, int pageSize)
     {
         var videos = await _videoRepository.GetPublicVideosAsync(pageNumber, pageSize);
 
         return videos
             .Skip((pageNumber - 1) * pageSize) 
             .Take(pageSize)
-            .Select(v => new VideoDto
+            .Select(v => new PublicVideoResponseDto
             {
                 Id = v.Id,
                 Title = v.Title,
@@ -43,6 +45,7 @@ public class VideoServiceImpl : VideoService
                 PrivacyLevel = v.PrivacyLevel,
                 VideoUrl = v.VideoUrl,
                 UserId = v.UserId,
+                UserName = v.UserName,
                 ViewsCount = _context.HistoryVideos.Count(h => h.VideoId == v.Id),
                 LikesCount = _context.Likes.Count(l => l.VideoId == v.Id),
                 TotalViewVideo = _context.HistoryVideos.Count(h => h.VideoId == v.Id) + _context.Likes.Count(l => l.VideoId == v.Id)
@@ -70,7 +73,7 @@ public class VideoServiceImpl : VideoService
             .ToList();
     }
 
-    public async Task<bool> UploadVideoAsync(int userId, UploadVideoDto request)
+    public async Task<bool> UploadVideoAsync(int userId, UploadVideoRequestDto request)
     {
         var user = await _userRepository.GetByIdAsync(userId);
         if (user == null)
@@ -142,7 +145,7 @@ public class VideoServiceImpl : VideoService
         return (int)inputFile.Metadata.Duration.TotalSeconds;
     }
 
-    public async Task<bool> UpdateVideoAsync(int videoId, int userId, UpdateVideoDto request)
+    public async Task<bool> UpdateVideoAsync(int videoId, int userId, UpdateVideoRequestDto request)
     {
         var video = await _videoRepository.GetVideoByIdAsync(videoId);
 
@@ -227,8 +230,6 @@ public class VideoServiceImpl : VideoService
             Hashtags = v.Hashtags,
             Description = v.Description,
             ViewsCount = v.ViewsCount, 
-            //LikesCount = v.LikesCount,
-            //TotalViewVideo = v.TotalViewVideo 
         }).ToList();
     }
 

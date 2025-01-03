@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Api_Youtube.Common;
 
-namespace Api_Youtube.Dto;
+namespace Api_Youtube.Dto.Request;
 
-public class UploadVideoDto
+public class UploadVideoRequestDto
 {
     public IFormFile? Video { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Api_Youtube.Data;
 using Api_Youtube.Dto;
+using Api_Youtube.Dto.Response;
 using Api_Youtube.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,12 +31,12 @@ public class VideoRepositoryImpl : VideoRepository
             .Where(v => v.UserId == userId)
             .ToListAsync();
     }
-    public async Task<PaginatedList<VideoDto>> GetPublicVideosAsync(int pageNumber, int pageSize)
+    public async Task<PaginatedList<PublicVideoResponseDto>> GetPublicVideosAsync(int pageNumber, int pageSize)
     {
         var videosQuery = _context.Videos
             .Include(v => v.User)
             .Where(v => v.PrivacyLevel == "Public")
-            .Select(v => new VideoDto
+            .Select(v => new PublicVideoResponseDto
             {
                 Id = v.Id,
                 Title = v.Title,
@@ -44,7 +45,7 @@ public class VideoRepositoryImpl : VideoRepository
                 PrivacyLevel = v.PrivacyLevel,
                 VideoUrl = v.VideoUrl,
                 UserId = v.UserId,
-                UserName = v.User.Username,
+                UserName = v.User.Username, 
                 ViewsCount = _context.HistoryVideos.Count(h => h.VideoId == v.Id),
                 LikesCount = _context.Likes.Count(l => l.VideoId == v.Id),
                 TotalViewVideo = _context.HistoryVideos.Count(h => h.VideoId == v.Id) + _context.Likes.Count(l => l.VideoId == v.Id)
@@ -57,7 +58,7 @@ public class VideoRepositoryImpl : VideoRepository
 
         var totalCount = await videosQuery.CountAsync();
 
-        return new PaginatedList<VideoDto>(videosPaged, totalCount, pageNumber, pageSize);
+        return new PaginatedList<PublicVideoResponseDto>(videosPaged, totalCount, pageNumber, pageSize);
     }
     
     public async Task<Video?> GetVideoByIdAsync(int videoId)

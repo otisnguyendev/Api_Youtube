@@ -1,65 +1,81 @@
 ﻿using Api_Youtube.Dto;
+using Api_Youtube.Dto.Request;
+using Api_Youtube.Dto.Response;
 using Api_Youtube.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-namespace Api_Youtube.Controller;
-
-[Route("api/comments")]
-[ApiController]
-public class CommentController : BaseController
+namespace Api_Youtube.Controller
 {
-    private readonly CommentService _commentService;
-
-    public CommentController(CommentService commentService)
+    [Route("api/comments")]
+    [ApiController]
+    public class CommentController : BaseController
     {
-        _commentService = commentService;
-    }
+        private readonly CommentService _commentService;
 
-    [Authorize]
-    [HttpPost("add")]
-    public async Task<IActionResult> AddComment([FromBody] CommentDto commentDto)
-    {
-        var userId = GetUserIdFromClaims();
+        public CommentController(CommentService commentService)
+        {
+            _commentService = commentService;
+        }
 
-        if (userId == 0)
-            return Unauthorized(new { message = "User is not authenticated." });
+        [Authorize]
+        [HttpPost("add/{videoId}")]
+        public async Task<IActionResult> AddComment(int videoId, [FromBody] CommentRequestDto request)
+        {
+            var userId = GetUserIdFromClaims();
 
-        var comment = await _commentService.AddCommentAsync(userId, commentDto.VideoId, commentDto.Content);
-        return CreatedAtAction(nameof(AddComment), new { id = comment.Id }, comment);
-    }
+            if (userId == 0)
+                return Unauthorized(new { message = "User is not authenticated." });
 
-    [Authorize]
-    [HttpPut("edit/{commentId}")]
-    public async Task<IActionResult> EditComment(int commentId, [FromBody] CommentDto commentDto)
-    {
-        var userId = GetUserIdFromClaims();
+            var comment = await _commentService.AddCommentAsync(userId, videoId, request.Content);
+            var response = new CommentResponseDto
+            {
+                Id = comment.Id,
+                VideoId = comment.VideoId,
+                Content = comment.Content,
+                UserId = comment.UserId
+            };
+            return CreatedAtAction(nameof(AddComment), new { id = response.Id }, response);
+        }
 
-        if (userId == 0)
-            return Unauthorized(new { message = "User is not authenticated." });
+        [Authorize]
+        [HttpPut("edit/{commentId}")]
+        public async Task<IActionResult> EditComment(int commentId, [FromBody] CommentRequestDto request)
+        {
+            var userId = GetUserIdFromClaims();
 
-        var comment = await _commentService.EditCommentAsync(commentId, commentDto.Content);
+            if (userId == 0)
+                return Unauthorized(new { message = "User is not authenticated." });
 
-        if (comment == null)
-            return NotFound(new { message = "Comment not found." });
+            var comment = await _commentService.EditCommentAsync(commentId, request.Content);
 
-        return Ok(comment);
-    }
+            if (comment == null)
+                return NotFound(new { message = "Comment not found." });
 
-    [Authorize]
-    [HttpDelete("delete/{commentId}")]
-    public async Task<IActionResult> DeleteComment(int commentId)
-    {
-        var userId = GetUserIdFromClaims();
+            var response = new CommentResponseDto
+            {
+                Id = comment.Id,
+                VideoId = comment.VideoId,
+                Content = comment.Content,
+                UserId = comment.UserId
+            };
+            return Ok(response);
+        }
 
-        if (userId == 0)
-            return Unauthorized(new { message = "User is not authenticated." });
+        [Authorize]
+        [HttpDelete("delete/{commentId}")]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            var userId = GetUserIdFromClaims();
 
-        var isDeleted = await _commentService.DeleteCommentAsync(commentId);
+            if (userId == 0)
+                return Unauthorized(new { message = "User is not authenticated." });
 
-        if (!isDeleted)
-            return NotFound(new { message = "Comment not found." });
+            var isDeleted = await _commentService.DeleteCommentAsync(commentId);
 
-        return NoContent();
+            if (!isDeleted)
+                return NotFound(new { message = "Comment not found." });
+
+            return NoContent();
+        }
     }
 }

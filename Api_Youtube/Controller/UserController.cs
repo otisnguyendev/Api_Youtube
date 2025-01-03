@@ -40,7 +40,7 @@ public class UserController : BaseController
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto request)
+    public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
     {
         if (!ModelState.IsValid || request == null)
             return BadRequest(new { Message = "Invalid registration data" });
@@ -75,7 +75,7 @@ public class UserController : BaseController
 
     [Authorize]
     [HttpPut("{id:int}/change-password")]
-    public async Task<IActionResult> ChangePassword(int id, [FromBody] ChangePasswordDto request)
+    public async Task<IActionResult> ChangePassword(int id, [FromBody] ChangePasswordRequestDto request)
     {
         if (id <= 0 || request == null)
             return BadRequest(new { Message = "Invalid request" });
@@ -96,7 +96,7 @@ public class UserController : BaseController
 
     [Authorize]
     [HttpPut("{id:int}/update-profile")]
-    public async Task<IActionResult> UpdateProfile(int id, [FromForm] UpdateProfileDto request)
+    public async Task<IActionResult> UpdateProfile(int id, [FromForm] UpdateProfileRequestDto request)
     {
         if (id <= 0 || request == null)
             return BadRequest(new { Message = "Invalid request" });
